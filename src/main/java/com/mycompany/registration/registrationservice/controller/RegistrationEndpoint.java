@@ -3,7 +3,7 @@
  * | Copyright © 2018 Colin But. All rights reserved. 
  * |-------------------------------------------------
  */
-package com.mycompany.registration.registrationservice;
+package com.mycompany.registration.registrationservice.controller;
 
 import com.mycompany.user.resource.UserResource;
 import org.slf4j.Logger;

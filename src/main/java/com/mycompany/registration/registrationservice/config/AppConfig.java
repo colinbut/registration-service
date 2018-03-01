@@ -3,7 +3,7 @@
  * | Copyright © 2018 Colin But. All rights reserved. 
  * |-------------------------------------------------
  */
-package com.mycompany.registration.registrationservice;
+package com.mycompany.registration.registrationservice.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

@@ -5,6 +5,7 @@
  */
 package com.mycompany.registration.registrationservice;
 
+import com.mycompany.registration.registrationservice.controller.RegistrationEndpoint;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
