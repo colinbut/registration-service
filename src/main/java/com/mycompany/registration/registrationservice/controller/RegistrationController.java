@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-public class RegistrationEndpoint {
+public class RegistrationController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationEndpoint.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
     private static final String USER_SERVICE_URL = "http://localhost:8080/";
     private static final String USER_SERVICE_ENDPOINT = "/user/{ssn}";

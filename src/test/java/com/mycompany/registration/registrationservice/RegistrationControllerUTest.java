@@ -5,7 +5,7 @@
  */
 package com.mycompany.registration.registrationservice;
 
-import com.mycompany.registration.registrationservice.controller.RegistrationEndpoint;
+import com.mycompany.registration.registrationservice.controller.RegistrationController;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +21,13 @@ import org.springframework.web.client.RestTemplate;
 import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RegistrationEndpointUTest {
+public class RegistrationControllerUTest {
 
     @Mock
     private RestTemplate restTemplate;
 
     @InjectMocks
-    private RegistrationEndpoint classUnderTest = new RegistrationEndpoint();
+    private RegistrationController classUnderTest = new RegistrationController();
 
     @Test
     public void givenUserAlreadyExist_whenRegister_thenReturnInternalServerError() {
