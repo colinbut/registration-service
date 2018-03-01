@@ -40,6 +40,14 @@ public class RegistrationEndpointUTest {
     }
 
     @Test
+    public void givenUserIsBlacklisted_whenRegister_thenReturnInternalServerError() {
+        Mockito.when(restTemplate.getForEntity(Matchers.anyString(), Matchers.any()))
+            .thenReturn(ResponseEntity.ok().build());
+
+        ResponseEntity responseEntity = classUnderTest.register();
+    }
+
+    @Test
     public void givenUserDoesNotAlreadyExist_AndNotBlacklisted_whenRegister_thenReturnReturnSuccess() {
         Mockito.when(restTemplate.getForEntity(Matchers.anyString(), Matchers.any()))
             .thenReturn(ResponseEntity.ok().build());

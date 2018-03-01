@@ -23,9 +23,11 @@ public class RegistrationEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationEndpoint.class);
 
     private static final String USER_SERVICE_URL = "http://localhost:8080/";
-
     private static final String USER_SERVICE_ENDPOINT = "/user/{ssn}";
     private static final String USER_SERVICE_CREATE_USER_ENDPOINT = "/user/create";
+
+    private static final String EXCLUSION_SERVICE_URL = "http://localhost:8090/exclusion-service/rest/";
+    private static final String EXCLUSION_SERVICE_VALIDATE = "validate/{ssn}/{dob}";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -40,6 +42,12 @@ public class RegistrationEndpoint {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(userServiceUrlEndpoint, String.class);
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        String exclusionServiceUrlEndpoint = EXCLUSION_SERVICE_URL + EXCLUSION_SERVICE_VALIDATE.replace("{ssn}/{dob}","");
+        ResponseEntity<String> responseEntity1 = restTemplate.getForEntity(exclusionServiceUrlEndpoint, String.class);
+        if (responseEntity1.getStatusCode() != HttpStatus.OK) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
