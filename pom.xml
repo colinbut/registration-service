@@ -23,7 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<apache.commons.lang3.version>3.6</apache.commons.lang3.version>
-		<user.resource.library.version>1.0</user.resource.library.version>
+		<user.resource.library.version>v1.0</user.resource.library.version>
 	</properties>
 
 	<repositories>
@@ -55,7 +55,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.mycompany.user.resource</groupId>
+			<groupId>com.github.colinbut</groupId>
 			<artifactId>user-resource-library</artifactId>
 			<version>${user.resource.library.version}</version>
 		</dependency>
