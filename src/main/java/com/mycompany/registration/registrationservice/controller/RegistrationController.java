@@ -5,57 +5,51 @@
  */
 package com.mycompany.registration.registrationservice.controller;
 
-import com.mycompany.user.resource.UserResource;
+import com.mycompany.registration.registrationservice.model.Registration;
+import com.mycompany.registration.registrationservice.service.RegisterService;
+import com.mycompany.registration.registrationservice.exception.UserAlreadyExistException;
+import com.mycompany.registration.registrationservice.exception.UserBlacklistedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+
+import javax.validation.Valid;
 
 @RestController
 public class RegistrationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
-    private static final String USER_SERVICE_URL = "http://localhost:8080/";
-    private static final String USER_SERVICE_ENDPOINT = "/user/{ssn}";
-    private static final String USER_SERVICE_CREATE_USER_ENDPOINT = "/user/create";
-
-    private static final String EXCLUSION_SERVICE_URL = "http://localhost:8090/exclusion-service/rest/";
-    private static final String EXCLUSION_SERVICE_VALIDATE = "validate/{ssn}/{dob}";
-
     @Autowired
-    private RestTemplate restTemplate;
+    private RegisterService registerService;
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ResponseEntity register() {
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity register(@RequestBody @Valid Registration registration) {
 
-        String userServiceUrlEndpoint = USER_SERVICE_URL + USER_SERVICE_ENDPOINT.replace("{ssn}", "###-0000-###-0001");
+        LOGGER.info("Attempting to register: %s", registration);
 
-        LOGGER.debug("Calling external UserService with endpoint URL: %s", userServiceUrlEndpoint);
+        try {
+            registerService.register(registration);
 
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(userServiceUrlEndpoint, String.class);
+            RegisteredUser registeredUser = buildRegisteredUser(registration);
+            return ResponseEntity.ok(registeredUser);
 
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+        } catch (UserAlreadyExistException ex) {
+            LOGGER.error("User Already Exist", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (UserBlacklistedException ex) {
+            LOGGER.error("User details is Blacklisted", ex);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
 
-        String exclusionServiceUrlEndpoint = EXCLUSION_SERVICE_URL + EXCLUSION_SERVICE_VALIDATE.replace("{ssn}/{dob}","");
-        ResponseEntity<String> responseEntity1 = restTemplate.getForEntity(exclusionServiceUrlEndpoint, String.class);
-        if (responseEntity1.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
-        UserResource requestResource = new UserResource();
-
-        HttpEntity<UserResource> request = new HttpEntity<>(requestResource);
-        restTemplate.postForEntity(USER_SERVICE_URL + USER_SERVICE_CREATE_USER_ENDPOINT, request, UserResource.class);
-
-        return ResponseEntity.ok().build();
+    private RegisteredUser buildRegisteredUser(Registration registration) {
+        return new RegisteredUser(registration.getForename(), "");
     }
 }
