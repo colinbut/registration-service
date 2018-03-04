@@ -7,6 +7,7 @@ package com.mycompany.registration.registrationservice.service.impl;
 
 import com.mycompany.registration.registrationservice.exception.UserAlreadyExistException;
 import com.mycompany.registration.registrationservice.exception.UserBlacklistedException;
+import com.mycompany.registration.registrationservice.model.Address;
 import com.mycompany.registration.registrationservice.model.Registration;
 import com.mycompany.registration.registrationservice.service.ExclusionService;
 import com.mycompany.registration.registrationservice.service.UserService;
@@ -18,6 +19,8 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Date;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegisterServiceImplUTest {
@@ -33,8 +36,7 @@ public class RegisterServiceImplUTest {
 
     @Test(expected = UserAlreadyExistException.class)
     public void givenUserAlreadyExist_whenRegister_thenThrowUserAlreadyExistException() throws UserBlacklistedException, UserAlreadyExistException {
-
-        Registration registration = new Registration();
+        Registration registration = getRegistration();
 
         Mockito.when(userService.checkUserAlreadyExist(Matchers.any(UserResource.class))).thenReturn(true);
 
@@ -45,7 +47,7 @@ public class RegisterServiceImplUTest {
 
     @Test(expected = UserBlacklistedException.class)
     public void givenUserIsBlacklisted_whenRegister_thenThrowUserBlacklistedException() throws UserBlacklistedException, UserAlreadyExistException {
-        Registration registration = new Registration();
+        Registration registration = getRegistration();
 
         Mockito.when(userService.checkUserAlreadyExist(Matchers.any(UserResource.class))).thenReturn(false);
         Mockito.when(exclusionService.userIsBlacklisted(Matchers.eq(registration.getSsn()), Matchers.eq(registration.getDob()))).thenReturn(true);
@@ -58,7 +60,7 @@ public class RegisterServiceImplUTest {
 
     @Test
     public void givenUser_whenRegister_thenCreateNewUser() throws UserBlacklistedException, UserAlreadyExistException {
-        Registration registration = new Registration();
+        Registration registration = getRegistration();
 
         Mockito.when(userService.checkUserAlreadyExist(Matchers.any(UserResource.class))).thenReturn(false);
         Mockito.when(exclusionService.userIsBlacklisted(Matchers.eq(registration.getSsn()), Matchers.eq(registration.getDob()))).thenReturn(false);
@@ -69,6 +71,24 @@ public class RegisterServiceImplUTest {
         Mockito.verify(userService, Mockito.times(1)).checkUserAlreadyExist(Matchers.any(UserResource.class));
         Mockito.verify(exclusionService, Mockito.times(1)).userIsBlacklisted(Matchers.eq(registration.getSsn()), Matchers.eq(registration.getDob()));
         Mockito.verify(userService, Mockito.times(1)).createNewUser(Matchers.any(UserResource.class));
+    }
+
+    private Registration getRegistration(){
+        Registration registration = new Registration();
+        registration.setSsn("ssn");
+        registration.setForename("forename");
+        registration.setSurname("surname");
+        registration.setDob(new Date());
+
+        Address address = new Address();
+        address.setPostCode("Postcode");
+        address.setAddress("address");
+        address.setCity("City");
+        address.setCountry("Country");
+
+        registration.setAddress(address);
+
+        return registration;
     }
 
 }
