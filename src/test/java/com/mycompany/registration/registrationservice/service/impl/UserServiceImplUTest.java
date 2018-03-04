@@ -60,7 +60,8 @@ public class UserServiceImplUTest {
 
     @Test
     public void testCreateNewUser(){
-        Mockito.doNothing().when(restTemplate).postForEntity(Matchers.anyString(), Matchers.any(UserResource.class), Matchers.any());
+        Mockito.when(restTemplate.postForEntity(Matchers.anyString(), Matchers.any(UserResource.class), Matchers.any()))
+            .thenReturn(ResponseEntity.ok().build());
 
         classUnderTest.createNewUser(new UserResource());
 
