@@ -1,0 +1,15 @@
+version: '3'
+services:
+  app:
+    container_name: registration-service
+    image: registration-service:1.0-SNAPSHOT
+    depends_on:
+      - rabbitmq
+    ports:
+      - "8080:8080"
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:management
+    ports:
+          - "5672:5672"
+          - "15672:15672"
