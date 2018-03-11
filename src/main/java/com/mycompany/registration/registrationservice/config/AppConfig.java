@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AppConfig {
 
-    static final String MARKETING_QUEUE = "marketing-queue";
+    static final String MARKETING_QUEUE = "registration-marketing-queue";
     static final String EXCHANGE = "microservices-app-exchange";
 
     @Bean
