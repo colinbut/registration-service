@@ -15,6 +15,7 @@ public class Registration {
     private String surname;
     private Date dob;
     private Address address;
+    private boolean subscribedToMarketingEmails;
 
     public String getSsn() {
         return ssn;
@@ -56,6 +57,14 @@ public class Registration {
         this.address = address;
     }
 
+    public boolean isSubscribedToMarketingEmails() {
+        return subscribedToMarketingEmails;
+    }
+
+    public void setSubscribedToMarketingEmails(boolean subscribedToMarketingEmails) {
+        this.subscribedToMarketingEmails = subscribedToMarketingEmails;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -74,6 +83,7 @@ public class Registration {
             .append(surname, that.surname)
             .append(dob, that.dob)
             .append(address, that.address)
+            .append(subscribedToMarketingEmails, that.subscribedToMarketingEmails)
             .isEquals();
     }
 
@@ -85,6 +95,7 @@ public class Registration {
             .append(surname)
             .append(dob)
             .append(address)
+            .append(subscribedToMarketingEmails)
             .toHashCode();
     }
 
@@ -96,6 +107,8 @@ public class Registration {
             .append("surname", surname)
             .append("dob", dob)
             .append("address", address)
+            .append("isSubscribedToMarketingEmails", subscribedToMarketingEmails)
             .toString();
     }
+
 }
