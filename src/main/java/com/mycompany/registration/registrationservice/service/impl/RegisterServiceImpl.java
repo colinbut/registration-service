@@ -11,6 +11,7 @@ import com.mycompany.registration.registrationservice.model.Address;
 import com.mycompany.registration.registrationservice.model.Registration;
 import com.mycompany.registration.registrationservice.service.ExclusionService;
 import com.mycompany.registration.registrationservice.service.RegisterService;
+import com.mycompany.registration.registrationservice.service.SubscriptionService;
 import com.mycompany.registration.registrationservice.service.UserService;
 import com.mycompany.user.resource.UserResource;
 import org.slf4j.Logger;
@@ -29,6 +30,9 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private ExclusionService exclusionService;
 
+    @Autowired
+    private SubscriptionService subscriptionService;
+
     @Override
     public void register(Registration registration) throws UserAlreadyExistException, UserBlacklistedException {
 
@@ -43,6 +47,8 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
         userService.createNewUser(userResource);
+
+        subscriptionService.sendRegistration(registration);
 
         LOG.info("Successfully Registered new user: %s", userResource);
 

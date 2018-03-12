@@ -10,6 +10,7 @@ import com.mycompany.registration.registrationservice.exception.UserBlacklistedE
 import com.mycompany.registration.registrationservice.model.Address;
 import com.mycompany.registration.registrationservice.model.Registration;
 import com.mycompany.registration.registrationservice.service.ExclusionService;
+import com.mycompany.registration.registrationservice.service.SubscriptionService;
 import com.mycompany.registration.registrationservice.service.UserService;
 import com.mycompany.user.resource.UserResource;
 import org.junit.Test;
@@ -30,6 +31,9 @@ public class RegisterServiceImplUTest {
 
     @Mock
     private ExclusionService exclusionService;
+
+    @Mock
+    private SubscriptionService subscriptionService;
 
     @InjectMocks
     private RegisterServiceImpl classInTest = new RegisterServiceImpl();
@@ -59,18 +63,20 @@ public class RegisterServiceImplUTest {
     }
 
     @Test
-    public void givenUser_whenRegister_thenCreateNewUser() throws UserBlacklistedException, UserAlreadyExistException {
+    public void givenUser_whenRegister_thenCreateNewUser_AndSendRegistrationToSubscrptionService() throws UserBlacklistedException, UserAlreadyExistException {
         Registration registration = getRegistration();
 
         Mockito.when(userService.checkUserAlreadyExist(Matchers.any(UserResource.class))).thenReturn(false);
         Mockito.when(exclusionService.userIsBlacklisted(Matchers.eq(registration.getSsn()), Matchers.eq(registration.getDob()))).thenReturn(false);
         Mockito.doNothing().when(userService).createNewUser(Matchers.any(UserResource.class));
+        Mockito.doNothing().when(subscriptionService).sendRegistration(registration);
 
         classInTest.register(registration);
 
         Mockito.verify(userService, Mockito.times(1)).checkUserAlreadyExist(Matchers.any(UserResource.class));
         Mockito.verify(exclusionService, Mockito.times(1)).userIsBlacklisted(Matchers.eq(registration.getSsn()), Matchers.eq(registration.getDob()));
         Mockito.verify(userService, Mockito.times(1)).createNewUser(Matchers.any(UserResource.class));
+        Mockito.verify(subscriptionService, Mockito.times(1)).sendRegistration(registration);
     }
 
     private Registration getRegistration(){
