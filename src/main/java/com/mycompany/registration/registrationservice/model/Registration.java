@@ -13,6 +13,7 @@ public class Registration {
     private String ssn;
     private String forename;
     private String surname;
+    private String email;
     private Date dob;
     private Address address;
     private boolean subscribedToMarketingEmails;
@@ -39,6 +40,14 @@ public class Registration {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getDob() {
@@ -81,6 +90,7 @@ public class Registration {
             .append(ssn, that.ssn)
             .append(forename, that.forename)
             .append(surname, that.surname)
+            .append(email, that.email)
             .append(dob, that.dob)
             .append(address, that.address)
             .append(subscribedToMarketingEmails, that.subscribedToMarketingEmails)
@@ -93,6 +103,7 @@ public class Registration {
             .append(ssn)
             .append(forename)
             .append(surname)
+            .append(email)
             .append(dob)
             .append(address)
             .append(subscribedToMarketingEmails)
@@ -105,10 +116,10 @@ public class Registration {
             .append("ssn", ssn)
             .append("forename", forename)
             .append("surname", surname)
+            .append("email", email)
             .append("dob", dob)
             .append("address", address)
             .append("isSubscribedToMarketingEmails", subscribedToMarketingEmails)
             .toString();
     }
-
 }
