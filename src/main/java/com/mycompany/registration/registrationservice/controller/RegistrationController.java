@@ -30,7 +30,7 @@ public class RegistrationController {
     private RegisterService registerService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody @Valid Registration registration) {
+    public ResponseEntity<?> register(@RequestBody @Valid Registration registration) {
 
         LOGGER.info("Attempting to register: %s", registration);
 

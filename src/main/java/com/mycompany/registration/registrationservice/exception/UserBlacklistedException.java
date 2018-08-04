@@ -7,7 +7,9 @@ package com.mycompany.registration.registrationservice.exception;
 
 public class UserBlacklistedException extends Exception {
 
-    public UserBlacklistedException(){
+    private static final long serialVersionUID = 1L;
+
+	public UserBlacklistedException(){
         super();
     }
 
