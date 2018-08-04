@@ -32,6 +32,7 @@ public class ExclusionServiceImpl implements ExclusionService {
 
         String exclusionServiceUrlEndpoint = EXCLUSION_SERVICE_URL + EXCLUSION_SERVICE_VALIDATE.replace("{ssn}/{dob}","");
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(exclusionServiceUrlEndpoint, String.class);
+        // TODO fix this - should check the response from Exclusion Service
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             return true;
         }

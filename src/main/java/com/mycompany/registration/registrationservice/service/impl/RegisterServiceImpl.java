@@ -48,6 +48,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         userService.createNewUser(userResource);
 
+        // TODO - if userService fails then? Consider using Compensation Transactions
         subscriptionService.sendRegistration(registration);
 
         LOG.info("Successfully Registered new user: %s", userResource);

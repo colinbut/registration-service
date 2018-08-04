@@ -13,10 +13,13 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.*;
+
+import java.util.Date;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplUTest {
@@ -60,12 +63,23 @@ public class UserServiceImplUTest {
 
     @Test
     public void testCreateNewUser(){
-        Mockito.when(restTemplate.postForEntity(Matchers.anyString(), Matchers.any(UserResource.class), Matchers.any()))
+
+        UserResource userResource = new UserResource();
+        userResource.setSsn("ssn");
+        userResource.setFirstname("FirstName");
+        userResource.setSurname("Surname");
+        userResource.setAddress("Address");
+        userResource.setPostcode("Postcode");
+        userResource.setCity("City");
+        userResource.setCountry("Country");
+        userResource.setDob(new Date());
+
+        Mockito.when(restTemplate.postForEntity(Matchers.anyString(), Matchers.any(HttpEntity.class), Matchers.any()))
             .thenReturn(ResponseEntity.ok().build());
 
-        classUnderTest.createNewUser(new UserResource());
+        classUnderTest.createNewUser(userResource);
 
-        Mockito.verify(restTemplate, Mockito.times(1)).postForEntity(Matchers.anyString(), Matchers.any(UserResource.class), Matchers.any());
+        Mockito.verify(restTemplate, Mockito.times(1)).postForEntity(Matchers.anyString(), Matchers.any(HttpEntity.class), Matchers.any());
     }
 
 }

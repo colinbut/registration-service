@@ -42,17 +42,14 @@ public class UserServiceImpl implements UserService {
         }
 
         String body = responseEntity.getBody();
-        LOGGER.info(body);
+        LOGGER.debug(body);
 
         return true;
     }
 
     @Override
     public void createNewUser(UserResource userResource) {
-        UserResource requestResource = new UserResource();
-
-        HttpEntity<UserResource> request = new HttpEntity<>(requestResource);
+        HttpEntity<UserResource> request = new HttpEntity<>(userResource);
         restTemplate.postForEntity(USER_SERVICE_URL + USER_SERVICE_CREATE_USER_ENDPOINT, request, UserResource.class);
-
     }
 }
