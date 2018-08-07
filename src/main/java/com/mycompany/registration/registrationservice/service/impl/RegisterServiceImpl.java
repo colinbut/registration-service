@@ -61,6 +61,7 @@ public class RegisterServiceImpl implements RegisterService {
         userResource.setFirstname(registration.getForename());
         userResource.setSurname(registration.getSurname());
         userResource.setDob(registration.getDob());
+        userResource.setEmail(registration.getEmail());
         Address address = registration.getAddress();
         userResource.setAddress(address.getAddress());
         userResource.setPostcode(address.getPostCode());
